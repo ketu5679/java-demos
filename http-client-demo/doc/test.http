@@ -1,0 +1,14 @@
+GET http://localhost:8080/get1?id=99&name=133
+Accept: application/json
+
+###
+
+GET http://localhost:8080/get2?id=99&name=133
+Accept: application/json
+
+###
+GET http://localhost:8080/get3?id=99&name=133&subIds=13&subIds=12
+Accept: application/json
+
+###
+
