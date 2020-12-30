@@ -1,0 +1,11 @@
+swagger:
+  enabled: true
+  base-path: /**
+  base-package: com.example.swagger
+  title: title
+  description: desc
+  version: 1.0
+  contact:
+    name: ketu
+    url: http://www.baidu.com
+    email: 760205738@qq.com
