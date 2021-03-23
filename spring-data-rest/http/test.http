@@ -1,0 +1,40 @@
+POST http://localhost:80/user
+Content-Type: application/json
+
+{
+  "name": "ketu2222",
+  "age": 18,
+  "email": "ketu@email.com"
+}
+
+
+###
+GET http://localhost:80/user
+Accept: application/json
+
+###
+GET http://localhost:80/user/1
+Accept: application/json
+
+###
+PUT http://localhost:80/user/1
+Content-Type: application/json
+
+{
+  "name": "ket",
+  "age": 20,
+  "email": "ketu@email.com"
+}
+
+###
+DELETE http://localhost:80/user/1
+
+
+
+### pagingQuery
+GET http://localhost:80/user?page=0&size=2&sort=id,desc
+Accept: application/json
+
+###
+GET http://localhost:80/api/user?page=0&size=2&sort=id,desc
+Accept: application/json

@@ -1,4 +1,4 @@
-fun main(args: Array<String>) {
+fun main() {
     println("hello world!")
 
     var name = "ketu"
