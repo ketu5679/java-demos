@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
@@ -33,6 +34,12 @@ public class SpringbootOpenFeignServerApplication {
     @GetMapping("/test")
     public User test() {
         return User.builder().name("ketu").age(27).addr("nj").createTime(LocalDateTime.now()).build();
+    }
+
+    @GetMapping("/test404")
+    public User test(HttpServletResponse response) {
+        response.setStatus(404);
+        return null;
     }
 
 }

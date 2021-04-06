@@ -17,6 +17,5 @@ public class User {
     private String name;
     private Integer age;
     private String addr;
-    private String createTime;
-//    private LocalDateTime createTime;
+    private LocalDateTime createTime;
 }
