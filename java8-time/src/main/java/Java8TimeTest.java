@@ -68,5 +68,7 @@ public class Java8TimeTest {
         TemporalAdjuster temporalAdjuster = TemporalAdjusters.firstDayOfMonth();
         System.out.println(temporalAdjuster.adjustInto(LocalDate.now()));
         // 2020-12-23T23:40:16.196+08:00
+
+
     }
 }

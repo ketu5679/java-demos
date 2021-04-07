@@ -1,0 +1,7 @@
+POST http://localhost:8080/testNested
+Content-Type: application/json
+
+{ "id":12, "users":[]}
+####
+GET http://localhost:8080/test
+

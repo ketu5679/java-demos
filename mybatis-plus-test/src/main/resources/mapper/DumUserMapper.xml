@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplustest.mapper.DumUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplustest.entity.DumUser">
+        <id column="id" property="id" />
+        <result column="employee_id" property="employeeId" />
+        <result column="ulp_account" property="ulpAccount" />
+        <result column="oa_account" property="oaAccount" />
+        <result column="group_nm" property="groupNm" />
+        <result column="dept_nm" property="deptNm" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="last_update_time" property="lastUpdateTime" />
+        <result column="account_status" property="accountStatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, employee_id, ulp_account, oa_account, group_nm, dept_nm, gmt_create, last_update_time, account_status
+    </sql>
+
+</mapper>

@@ -1,0 +1,313 @@
+@startuml
+actor user
+user -> 数据地图: 申请表权限
+actor admin
+user <-- admin: 敏感表 邮件申请
+user --> admin: 邮件申请
+数据地图 <- admin: 审批表权限
+@enduml
+
+' 系统交互流程
+@startuml
+actor user
+participant 数据地图
+participant 权限管理平台
+actor admin
+user -> 数据地图: 申请表a查询权限
+数据地图 <- admin: 审批表权限
+数据地图 -> 权限管理平台: 赋权
+数据地图 <- 权限管理平台: 赋权完毕
+user <- 数据地图: 审批通过
+@enduml
+
+@startuml
+actor user
+user -> 数据地图: 申请表权限
+数据地图 -> oa: 用户a申请b表（表信息）
+oa --> 审批单: 审批流程
+oa <-- 审批单: 审批流程完成
+数据地图 <- oa: 审批通过
+数据地图 -> 权限管理平台: 为用户a赋表b查询权限
+数据地图 <- 权限管理平台: 为用户a赋表b查询权限
+user <- 数据地图: 消息通知
+
+user -> 查询平台: 查询表a
+查询平台-> 权限管理平台: 鉴权
+查询平台<- 权限管理平台: 鉴权通过
+user <-- 查询平台: 通知：（查询/下载超过阈值）
+user <- 查询平台: 查询/下载结果
+@enduml
+
+@startuml
+start
+floating note right:流程被拒绝直接回到发起人
+
+if (敏感程度) then (L1、A1)
+    : 需求方直接主管;
+    : 需求方二级主管;
+    : 安全部;
+    : 需求方中心负责人;
+    : 归属方owner;
+    : 归属方直接主管;
+else if (敏感程度) then (L2、A2)
+    : 需求方直接主管;
+    : 需求方二级主管;
+    : 安全部;
+    : 归属方owner;
+else
+    : 需求方直接主管;
+    : 安全部;
+    : 归属方owner;
+endif
+end
+@enduml
+@startuml
+
+start
+
+:use repeat;
+repeat
+  :read data;
+  :generate diagrams;
+repeat while (more data?)
+:use while;
+while (data available?)
+    :read data;
+    :generate diagrams;
+endwhile
+:finished;
+
+
+if (multiprocessor?) then (yes)
+  fork
+	:Treatment 1;
+  fork again
+	:Treatment 2;
+  end fork
+else (monoproc)
+  :Treatment 1;
+  :Treatment 2;
+endif
+
+stop
+@enduml
+
+@startuml
+#red:foo1;
+-> You can put text on arrows;
+if (test) then
+  -[#blue]->
+  :foo2;
+  -[#green,dashed]-> The text can
+  also be on several lines
+  and **very** long...;
+  :foo3;
+else
+  -[#black,dotted]->
+  :foo4;
+endif
+-[#gray,bold]->
+:foo5;
+@enduml
+
+@startuml
+start
+:Some activity;
+(A)
+detach
+(A)
+:Other activity;
+@enduml
+@startuml
+start
+partition Initialization {
+	:read config file;
+	:init internal variable;
+}
+partition Running {
+	:wait for user interaction;
+	:print information;
+}
+stop
+@enduml
+
+@startuml
+|Swimlane1|
+start
+:foo1;
+|#AntiqueWhite|Swimlane2|
+:foo2;
+:foo3;
+|Swimlane1|
+:foo4;
+|Swimlane2|
+:foo5;
+stop
+@enduml
+
+
+@startuml
+
+start
+:foo1;
+floating note left: This is a note
+:foo2;
+note right
+  This note is on several
+  //lines// and can
+  contain <b>HTML</b>
+  ====
+  * Calling the method ""foo()"" is prohibited
+end note
+stop
+@enduml
+@startuml
+ :start;
+ fork
+   :foo1;
+   :foo2;
+ fork again
+   :foo3;
+   detach
+ endfork
+ if (foo4) then
+   :foo5;
+   detach
+ endif
+ :foo6;
+ detach
+ :foo7;
+ stop
+ end
+ start
+@enduml
+
+@startuml
+:Ready;
+:next(o)|
+:Receiving;
+split
+ :nak(i)<
+ :ack(o)>
+split again
+ :ack(i)<
+ :next(o)
+ on several line|
+ :i := i + 1]
+ :ack(o)>
+split again
+ :err(i)<
+ :nak(o)>
+split again
+ :foo/
+split again
+ :i > 5}
+stop
+end split
+:finish;
+@enduml
+@startuml
+autonumber
+'actor a #red
+'database b
+'participant c
+skinparam blcakgroundColor #EEEBDC
+skinparam sequence {
+    LifeLineBackgroundColor #red
+}
+actor User
+participant "First Class" as A
+participant "Second Class" as B
+participant "Last Class" as C
+
+User -> A: DoWork
+activate A
+A->B: Create request
+activate B
+B->C: DoWork
+activate C
+C-->B:workDone
+destroy C
+B-->A:Request Created
+deactivate B
+A-->User:Done
+deactivate A
+
+@enduml
+
+@startuml
+left to right direction
+actor customer
+actor clerk
+rectangle {
+    customer -- (checkout)
+    (checkout) .>(payment):include
+    (help) .>(checkout):extends
+    (checkout) -- clerk
+}
+
+@enduml
+
+@startuml
+package "产品线" {
+    ["pos"] - ["cashloan"]
+    ["cashloan"] - ["merchant"]
+}
+node "api网关" {
+    ["merchant"] --> ["apigateway"]
+    ["apigateway"] --> ["负载均衡服务器"]
+}
+cloud {
+    ["负载均衡服务器"] --> ["A"]
+    ["A"] -> ["B"]
+}
+database "mysql" {
+    frame "master" {
+        [DB]
+    }
+}
+["A"] --> [DB]
+["B"] --> [DB]
+@enduml
+https://blog.csdn.net/zh_weir/article/details/72675013?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.control
+@startuml
+title whats's this?
+legend center
+这是一个借钱与还钱发生的故事。
+故事发生在一个夜黑风高的晚上……
+endlegend
+
+张三 -> 李四 : 我要借钱
+李四 --> 张三 : 借给你
+newpage
+
+张三 -> 李四 : 我要还钱
+李四 --> 张三 : 收到欠款
+
+newpage 最后的标题
+
+张三 -> 李四 : 我还要借钱
+李四 --> 张三 : 不借了
+@enduml
+
+@startuml
+
+alt 借钱案例
+张三 -> 李四 : 我要借钱
+
+loop 循环借钱100次
+group 成功案例
+李四 --> 张三 : 借给你
+end
+
+张三 -> 李四 : 我要还钱
+李四 --> 张三 : 收到欠款
+end
+
+else 借钱失败
+张三 -> 李四 : 我还要借钱
+李四 --> 张三 : 不借了
+
+end
+
+@enduml
