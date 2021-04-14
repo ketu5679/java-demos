@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * 字符串处理通用方法
  *
- * @author zhoujunhao
+ * @author ketu
  */
 public class StringHelpers {
     /**

@@ -2,7 +2,11 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.fs.permission.FsPermission;
 import org.apache.hadoop.io.IOUtils;
+import org.apache.hadoop.util.Progressable;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -45,12 +49,34 @@ public class HdfsTool {
         IOUtils.copyBytes(open, System.out, 4096, false);
         System.out.println(open.getPos());
 
+
+        System.out.println("create file /test2/largeFile");
+        uploadShowProcess("D:\\deepin-desktop-community-1002-amd64.iso", "/test2/largeFile");
+    }
+
+    public static void uploadShowProcess(String src, String des) throws IOException {
+        File largerFile = new File(src);
+        final float fileSize = (float) largerFile.length() / 65536;
+        BufferedInputStream in;
+        FSDataOutputStream out = fs.create(new Path(des), new Progressable() {
+            long fileCount = 0;
+
+            public void progress() {
+                fileCount++;
+                System.out.println(String.format("总进度 %s/%s(%s%%)", fileCount, fileSize, fileCount / fileSize * 100));
+            }
+        });
+        in = new BufferedInputStream(new FileInputStream(largerFile));
+        IOUtils.copyBytes(in, out, 4096, false);
+        out.hsync();
+        out.close();
+        in.close();
     }
 
     public static void mkdir(String path) throws IOException {
         Path p = new Path(path);
         fs.mkdirs(p);
-        fs.setOwner(p, "zhoujunhao", "supergroup");
+        fs.setOwner(p, "ketu", "supergroup");
     }
 
     public static void list(String path) throws IOException {

@@ -1,0 +1,9 @@
+spring:
+  rabbitmq:
+    host: mq.ketu.zjh
+    port: 5672
+    username: test
+    password: test
+    virtual-host: oscphost
+    publisher-returns: true
+    publisher-confirm-type: simple
