@@ -4,6 +4,7 @@ import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,9 @@ public class MessageListenerConfig {
     private CachingConnectionFactory connectionFactory;
     @Autowired
     private MyAckReceiver myAckReceiver;//消息接收处理类
+
+    @Value("${spring.rabbitmq.test.queue}")
+    private String queueName;
 
     @Bean
     public SimpleMessageListenerContainer simpleMessageListenerContainer() {

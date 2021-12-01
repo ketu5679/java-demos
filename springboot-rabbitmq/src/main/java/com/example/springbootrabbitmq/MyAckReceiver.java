@@ -17,6 +17,7 @@ public class MyAckReceiver implements ChannelAwareMessageListener {
 
     @Override
     public void onMessage(Message message, Channel channel) throws Exception {
+        System.out.println(message);
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
         try {
             //因为传递消息的时候用的map传递,所以将Map从Message内取出需要做些处理

@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,9 +36,30 @@ public class DirectRabbitConfig {
         return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with("TestDirectRouting");
     }
 
-
     @Bean
     DirectExchange lonelyDirectExchange() {
         return new DirectExchange("lonelyDirectExchange");
+    }
+
+    @Value("${spring.rabbitmq.test.queue}")
+    private String queueName;
+    @Value("${spring.rabbitmq.test.exchange}")
+    private String exchangeName;
+    @Value("${spring.rabbitmq.test.routing-key}")
+    private String routingKey;
+
+    @Bean
+    public Queue testQueue() {
+        return new Queue(queueName, true);
+    }
+
+    @Bean
+    public DirectExchange testExchange() {
+        return new DirectExchange(exchangeName, true, false);
+    }
+
+    @Bean
+    public Binding bindingTest() {
+        return BindingBuilder.bind(testQueue()).to(testExchange()).with(routingKey);
     }
 }

@@ -21,26 +21,27 @@ public class SqlparseApplication {
 //        SpringApplication.run(SqlparseApplication.class, args);
         SqlparseApplication app = new SqlparseApplication();
 //        app.parseSql("select * from (select id from dm.dmfasdf)a");
-        app.parseSql("select * from (select id from dm.dmfasdf union all select * from ccc)a");
-        app.parseSql("select * from (select a.id from dm.dmfasdf a left join aa b on a.id=b.id union all select * from af)a");
-        app.parseSql("select * from (select a.id from dm.dmfasdf a left join (select * from ke1 union all select * from f2) b on a.id=b.id union all select * from af)a");
+//        app.parseSql("select * from (select id from dm.dmfasdf union all select * from ccc)a");
+        app.parseSql("select * from (select a.id, b.name from dm.dmfasdf a left join aa b on a.id=b.id union all select * from af)a");
+//        app.parseSql("select * from (select a.id from dm.dmfasdf a left join (select * from ke1 union all select * from f2) b on a.id=b.id union all select * from af)a");
     }
 
     public List<String> parseSql(@RequestParam("sql") String sql) {
-        SQLStatementParser sqlStatementParser = SQLParserUtils.createSQLStatementParser(sql, DbType.mysql);
+        SQLStatementParser sqlStatementParser = SQLParserUtils.createSQLStatementParser(sql, DbType.presto);
         SQLSelectStatement sqlStatement = (SQLSelectStatement) sqlStatementParser.parseSelect();
-        MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) sqlStatement.getSelect().getQuery();
+        SQLSelectQuery query = sqlStatement.getSelect().getQuery();
         parseQuery(query);
         List<String> strings = new ArrayList<>(tables);
         tables.clear();
+        System.out.println(strings);
         return strings;
     }
 
     private List<String> tables = new ArrayList<>();
 
     public void parseQuery(SQLSelectQuery query) {
-        if (query instanceof MySqlSelectQueryBlock) {
-            parseSource(((MySqlSelectQueryBlock) query).getFrom());
+        if (query instanceof SQLSelectQueryBlock) {
+            parseSource(((SQLSelectQueryBlock) query).getFrom());
         } else if (query instanceof SQLSubqueryTableSource) {
             parseQuery(((SQLSubqueryTableSource) query).getSelect().getQuery());
         } else if (query instanceof SQLUnionQuery) {
@@ -67,6 +68,7 @@ public class SqlparseApplication {
     }
 
     public void parseSqlExpr(SQLExpr expr) {
+        System.out.println(expr);
         if (expr instanceof SQLPropertyExpr) {
             tables.add(((SQLPropertyExpr) expr).getName());
         } else if (expr instanceof SQLIdentifierExpr) {
